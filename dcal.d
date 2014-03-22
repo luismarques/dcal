@@ -575,19 +575,39 @@ auto formatYear(int year, int monthsPerRow)
 }
 
 
-int main(string[] args) {
-    // This is as simple as it gets: parse the year from the command-line:
-    if (args.length < 2) {
-        stderr.writeln("Please specify year");
-        return 1;
+version(benchmark)
+{
+    int main(string[] args)
+    {
+        enum MonthsPerRow = 3;
+        auto t = benchmark!(function() {
+                foreach(formattedYear; iota(1800, 2000).map!(year => formatYear(year, MonthsPerRow)))
+                {
+                    foreach(_; formattedYear){};
+                }
+            })(30);
+        writeln(t[0].msecs * 0.001);
+        return 0;
     }
-    int year = to!int(args[1]);
-
-    // Print the calender
-    enum MonthsPerRow = 3;
-    writeln(formatYear(year, MonthsPerRow));
-
-    return 0;
+}
+else
+{
+    int main(string[] args)
+    {
+    
+        // This is as simple as it gets: parse the year from the command-line:
+        if (args.length < 2) {
+            stderr.writeln("Please specify year");
+            return 1;
+        }
+        int year = to!int(args[1]);
+    
+        // Print the calender
+        enum MonthsPerRow = 3;
+        writeln(formatYear(year, MonthsPerRow));
+    
+        return 0;
+    }
 }
 
 // vim:set sw=4 ts=4 et:
