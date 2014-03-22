@@ -468,7 +468,7 @@ auto pasteBlocks(Range)(Range ror, int sepWidth)
                 .map!(a => a[0].empty ? spaces(a[1]) : a[0].front)
 
                 // Join them together to form a line
-                .join(sep);
+                .joiner(sep);
         }
 
         /// Pops an element off each subrange.
@@ -568,10 +568,10 @@ auto formatYear(int year, int monthsPerRow)
 
                  // Horizontally pasting each respective month's lines together
                  .pasteBlocks(colSpacing)
-                 .join("\n"))
+                 .joiner("\n"))
 
         // Insert a blank line between each row
-        .join("\n\n");
+        .joiner("\n\n");
 }
 
 
